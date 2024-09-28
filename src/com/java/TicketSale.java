@@ -1,6 +1,8 @@
 package com.java;
 
 
+import org.junit.Test;
+
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Hashtable;
@@ -70,48 +72,53 @@ public class TicketSale implements Runnable {
 
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
-//        // 创建三个线程代表三个售票窗口
-        ReentrantLock reentrantLock = new ReentrantLock();
-//        Thread window1 = new Thread(new TicketSale(1), "窗口1");
-//        Thread window2 = new Thread(new TicketSale(2), "窗口2");
-//        Thread window3 = new Thread(new TicketSale(3), "窗口3");
-//
-//        // 启动三个线程
-//        window1.start();
-//        window2.start();
-//        window3.start();
-        ConcurrentHashMap<Object, Object> objectObjectConcurrentHashMap = new ConcurrentHashMap<>();
-        Hashtable<Object, Object> objectObjectHashtable = new Hashtable<>();
-        ThreadLocal<Object> objectThreadLocal = new ThreadLocal<>();
-        Object object = objectThreadLocal.get();
-        CopyOnWriteArrayList<Object> objects = new CopyOnWriteArrayList<>();
-        AtomicInteger atomicInteger = new AtomicInteger();
-        atomicInteger.incrementAndGet();
-        List<String> list = Arrays.asList("test1", "test23");
-        new Thread(()->{
+        TicketSale ticketSale = new TicketSale(3);
+        int[] result = ticketSale.sortedSquares(new int[]{3, 7, 6, 2, 5, 4});
+        System.out.println(Arrays.toString(result));
+    }
 
-        });
+    public int[] sortedSquares(int[] nums) {
+        for (int i = 0; i < nums.length; i++) {
+            nums[i] *= nums[i];
+        }
+        BubbleSort(nums);
+        return nums;
+    }
 
-        ExecutorService service1 = Executors.newFixedThreadPool(3);
-        list.sort(new Comparator<String>() {
-            @Override
-            public int compare(String s, String t1) {
-                return 0;
+    public void quicksort(int[] nums, int low, int high) {
+        if (low < high) {
+            int pivorition = findPivorition(nums, low, high);
+            findPivorition(nums, 0, pivorition - 1);
+            findPivorition(nums, pivorition + 1, high);
+        }
+    }
+
+    public int findPivorition(int[] nums, int low, int high) {
+        int pivort = nums[low];
+        while (low < high) {
+            while (low < high && nums[high] >= pivort) high--;
+            nums[low] = nums[high];
+            while (low < high && nums[low] <= pivort) low++;
+            nums[high] = nums[low];
+        }
+        nums[low] = pivort;
+        return low;
+    }
+
+    public void BubbleSort(int[] nums) {
+        boolean flag = false;
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = 0; j < nums.length - i - 1; j++) {
+                if (nums[j] > nums[j + 1]) {
+                    int temp = nums[j];
+                    nums[j] = nums[j + 1];
+                    nums[j + 1] = temp;
+                    flag = true;
+                }
             }
-        });
-        Thread t1 = new Thread(new Runnable() {
-            @Override
-            public void run() {
-            }
-        });
-        Callable<String> callable = new MyCallable();
-        ExecutorService service = Executors.newFixedThreadPool(10);
-        Future<String> submit = service.submit(callable);
-
-        FutureTask<String> futureTask = new FutureTask<>(callable);
-        Thread t4 = new Thread(futureTask);
-        t4.start();
-        System.out.println(futureTask.get());
+            if (flag == false)
+                return;
+        }
     }
 }
 

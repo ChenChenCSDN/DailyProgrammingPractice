@@ -21,6 +21,10 @@ public class TestthreeSum{
         for (List<Integer> list : lists) {
             System.out.println(list);
         }
+        System.out.println(
+
+        );
+        System.out.println("This is a test");
     }
     public static List<List<Integer>> threeSum(int[] nums) {
         List<List<Integer>> result = new ArrayList<>();
